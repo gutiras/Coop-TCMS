@@ -1,0 +1,74 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Upload</h1>
+        <nav>
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Upload</li>
+            </ol>
+        </nav>
+      </div><!-- End Page Title -->
+       <section class="section">
+          <div class="row">
+            <div class="col-lg-6">
+               {% for message in messages %}
+               {% if message.tags == 'success' %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>
+               {% else %}
+                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      {{ message}}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>
+               {% endif %}
+            {% endfor %}
+              <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Import Your Files</h5>
+                            <div class="row mb-3">
+                                <label for="statusFile" class="col-sm-10 col-form-label">Please Select Status File</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="status_file" type="file" id="statusFile">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="testcaseFile" class="col-sm-10 col-form-label">Please Select Your Testcase File</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="testcase_file" type="file" id="testcaseFile">
+                                </div>
+                            </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-10 col-form-label">Select Testcase Group</label>
+                            <div class="col-sm-10">
+                                <select class="form-select" aria-label="Select Testcase Group" name="testcase_group">
+                                    <option selected disabled>Open this select menu</option>
+                                    {% for project in projects %}
+                                        <option value="{{ project.project_name }}">{{ project.project_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </form>
+
+            </div>
+          </div>
+       </section>
+
+    </main><!-- End #main -->
+
+{% endblock %}

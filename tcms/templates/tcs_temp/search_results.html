@@ -1,0 +1,44 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Results</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Searchs</li>
+        </ol>
+      </nav>
+    </div>
+    <section class="section">
+        <div class="row align-items-top">   
+            <div class="card">
+                <div class="card-header">Search results for {{ query }}</div>
+                <div class="card-body">
+                    
+                    {% if search_results %}
+                        <ul>
+                            {% for result in search_results %}
+                                <li>
+                                    <a href="{% url 'testcase_display' group=result.project_name filename=result.file_name %}">
+                                        {{ result.file_name }} 
+                                    </a>
+                                    <a href="{% url 'download_file' result.file_name result.project_name %}" ><button  type="button" class="btn btn-light">Download</button></a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No results found for "{{ query }}".</p>
+                    {% endif %}
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}

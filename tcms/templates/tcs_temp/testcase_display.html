@@ -1,0 +1,120 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+  <main id="main" class="main">
+  <div class="container d-flex">
+  <div class="pagetitle">
+    <h1>Testcases</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index'%}">Home</a></li>
+        <li class="breadcrumb-item active">Testcases</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="ms-auto">
+   {% if testcases2.exists and filename != 'a' %}
+      {% with first_testcase=testcases2.first %}
+        <a href="{% url 'download_file' first_testcase.file_name selected_group %}" download class="btn btn-primary">
+          Download original file <i class="bi bi-download"></i>
+        </a>
+         <a href="{% url 'export_to_excel' first_testcase.file_name selected_group %}" download class="btn btn-primary">
+         Download updated file<i class="bi bi-download"></i>
+        </a>
+      {% endwith %}
+    {% endif %}
+  </div>
+</div>
+
+     <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            
+            <div class="card-body">
+              <h5 class="card-title">{{selected_group}}</h5>
+
+              <!-- Table with hoverable rows -->
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Testcase ID</th>
+                    <th scope="col">Testcase Name</th>
+                    <th scope="col">Testcase Discription</th>
+                    <th scope="col">Testcase Status</th>
+                    <th scope="col">File Name</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Updated</th>
+                    <th scope="col">Edit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for testcase in testcases2 %}
+                  <tr>
+                   
+                    <th scope="row">{{testcase.testcase_id}}</th>
+                    <td>{{testcase.testcase_name}}</td>
+                    <td>{{testcase.testcase_description}}</td>
+                    <td>{{testcase.testcase_result}}</td>
+                    <td>{{testcase.file_name}}</td>
+                    <td>{{testcase.created_at}}</td>
+                    <td>{{testcase.updated_at}}</td>
+                    <td>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTestcaseModal"
+                        onclick="openEditModal('{{ testcase.testcase_id }}','{{ testcase.testcase_result }}','{{ testcase.testcase_group }}','{{ testcase.file_name }}',)">
+                        <i class="fas fa-edit"></i> Edit
+                      </button>
+                    </td>
+                  </tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+              <!-- End Table with hoverable rows -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+     </section>
+
+<!-- Edit Testcase Modal -->
+<div class="modal fade" id="editTestcaseModal" tabindex="-1" aria-labelledby="editTestcaseModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTestcaseModalLabel">Edit Testcase Result</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editTestcaseForm" method="post" action="{% url 'test_update' %}">
+          {% csrf_token %}
+          <input type="hidden" id="testcaseId" name="testcase_id">
+          <input type="hidden" id="filename" name="file_name">
+          <input type="hidden" id="testcaseGroup" name="testcase_group">
+          <div class="mb-3">
+            <label for="testcaseResult" class="form-label">Testcase Result</label>
+            <select class="form-select" id="testcaseResult" name="testcase_result">
+              <option value="Successful">Successful</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Failed">Failed</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openEditModal(testcaseId, testcaseResult,testcaseGroup,filename) {
+    // Set the values in the modal
+    document.getElementById('testcaseId').value = testcaseId;
+    document.getElementById('testcaseResult').value = testcaseResult;
+    document.getElementById('testcaseGroup').value = testcaseGroup;
+    document.getElementById('filename').value = filename;
+
+
+  }
+</script>
+{% endblock %}
