@@ -14,7 +14,8 @@ SECRET_KEY = 'django-insecure-7*kr)xy4d-1+_*5y^f1khj#1gh+44e#vr9wbq+zs1@jf%xux0t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = os.getenv("coop-tcms.onrender.com", "127.0.0.1,localhost").split(",")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Testcases')
