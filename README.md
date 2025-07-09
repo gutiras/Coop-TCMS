@@ -5,6 +5,7 @@ A web-based system for managing and organizing test cases, built with **Django**
 ## 🚀 Features
 
 - ✅ Upload and parse Excel files for test cases
+![alt text](upload.png)
 - 📂 Save uploaded files to project directory (`Testcases/`)
 - 🗂 Group test cases by category (`testcase_group`)
 - 📊 View summary statistics (e.g., count of Pass, Fail, Ongoing per group)
