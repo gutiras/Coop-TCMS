@@ -2,6 +2,8 @@
 
 from pathlib import Path
 import os
+import dj_database_url
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -66,16 +68,8 @@ WSGI_APPLICATION = 'tcms.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tcms',  # The name of your database
-        'USER': 'root',  # Your database user
-        'PASSWORD': '',  # Your database password
-        'HOST': 'localhost',  # The database host
-        'PORT': '3306',  # The default MySQL port
-    }
+    'default': dj_database_url.config(conn_max_age=600)
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
