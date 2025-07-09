@@ -1,19 +1,24 @@
+
+
 from pathlib import Path
 import os
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --------------------
-# Security Settings
-# --------------------
 
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-7*kr)xy4d-1+_*5y^f1khj#1gh+44e#vr9wbq+zs1@jf%xux0t'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
-# --------------------
-# Installed Apps
-# --------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Testcases')
+# Application definition
 
 INSTALLED_APPS = [
     'tcs',
@@ -25,12 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-# --------------------
-# Middleware
-# --------------------
-
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # must be at the top
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -40,21 +41,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# --------------------
-# URL & WSGI
-# --------------------
-
 ROOT_URLCONF = 'tcms.urls'
-WSGI_APPLICATION = 'tcms.wsgi.application'
-
-# --------------------
-# Templates
-# --------------------
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # your custom templates
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,59 +59,73 @@ TEMPLATES = [
     },
 ]
 
-# --------------------
+WSGI_APPLICATION = 'tcms.wsgi.application'
+
+
 # Database
-# --------------------
+# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DB_NAME", "tcms"),
-        'USER': os.getenv("DB_USER", "root"),
-        'PASSWORD': os.getenv("DB_PASSWORD", ""),
-        'HOST': os.getenv("DB_HOST", "localhost"),
-        'PORT': os.getenv("DB_PORT", "3306"),
+        'NAME': 'tcms',  # The name of your database
+        'USER': 'root',  # Your database user
+        'PASSWORD': '',  # Your database password
+        'HOST': 'localhost',  # The database host
+        'PORT': '3306',  # The default MySQL port
     }
 }
 
-# --------------------
-# Authentication
-# --------------------
 
+# Password validation
+# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = ''
-LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_REDIRECT_URL = ''  # URL to redirect to after login
+LOGOUT_REDIRECT_URL = '/login/'  # URL to redirect to after logout
 
-# --------------------
+
 # Internationalization
-# --------------------
+# https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
-# --------------------
-# Static Files (CSS, JS)
-# --------------------
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates', 'tcs_temp', 'assets'),
+    os.path.join(BASE_DIR, 'templates/tcs_temp/assets'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# --------------------
-# Media Files (Uploads)
-# --------------------
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Add the MEDIA_ROOT and MEDIA_URL settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Testcases')
-
-# --------------------
-# Default Primary Key Field Type
-# --------------------
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
